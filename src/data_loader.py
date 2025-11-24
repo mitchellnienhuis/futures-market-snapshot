@@ -8,3 +8,4 @@ def load_csv_contract(symbol: str) -> pd.DataFrame:
     df = pd.read_csv(path, parse_dates=['datetime'])
     df = df.sort_values('datetime').reset_index(drop=True)
     return df
+

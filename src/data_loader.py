@@ -1,21 +1,19 @@
 import pandas as pd
 import os
 
-# Get absolute path to THIS file's directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Streamlit Cloud runs from the repository root.
+# So data files MUST be located relative to the app file, not module location.
 
-# Build absolute path to /data folder (one level up from /src)
-DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
 def load_csv_contract(symbol: str) -> pd.DataFrame:
-    # Normalize path (handles .. properly)
-    data_path = os.path.normpath(os.path.join(DATA_DIR, f"{symbol.lower()}.csv"))
+    filename = f"{symbol.lower()}.csv"
+    path = os.path.join(DATA_DIR, filename)
 
-    print("Looking for CSV here:", data_path)  # Debug line
+    if not os.path.exists(path):
+        raise FileNotFoundError(f"CSV file not found at: {path}")
 
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"Could not find file: {data_path}")
-
-    df = pd.read_csv(data_path, parse_dates=['datetime'])
+    df = pd.read_csv(path, parse_dates=['datetime'])
     df = df.sort_values('datetime').reset_index(drop=True)
     return df

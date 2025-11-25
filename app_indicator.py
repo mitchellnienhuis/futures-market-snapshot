@@ -1,5 +1,7 @@
-import sys, os
+import sys
+import os
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+
 
 
 import streamlit as st
@@ -34,4 +36,5 @@ for i, sym in enumerate(symbols):
         )])
         fig.update_layout(height=300, margin=dict(t=25,b=10,l=10,r=10))
         st.plotly_chart(fig, use_container_width=True)
+
 
